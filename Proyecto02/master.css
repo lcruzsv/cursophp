@@ -1,0 +1,19 @@
+.titulo{
+  background-color: #6C8672;
+  color:#FFF;
+}
+
+body{
+  text-align: center;
+}
+
+table{
+  border: 1px solid black;
+      border-spacing: 0
+}
+
+
+.subtitulo{
+  background-color: #C4D4AF;
+  width: 35px;
+}

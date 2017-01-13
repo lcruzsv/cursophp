@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Calendario</title>
+    <title>Lista de tareas</title>
     <link rel="stylesheet" href="master.css">
   </head>
   <body>
