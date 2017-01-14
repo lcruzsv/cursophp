@@ -1,0 +1,12 @@
+body {
+  margin: 25px;
+}
+
+.ver-tarea{
+  margin:10px;
+  padding: 5px;
+  border-radius: 5px;
+  border-style: solid;
+  border-color:#eee;
+  background-color: #eee;
+}

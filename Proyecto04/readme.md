@@ -3,6 +3,7 @@
 # Objetivos
 - Formularios
 - Bases de datos
+- Validar entradas
 
 # Descripcion
 El programa va a mostrar una caja de texto para ingresar el nombre de la tarea

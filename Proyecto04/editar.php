@@ -26,7 +26,8 @@ if(isset($_POST['id']))
   <head>
     <meta charset="utf-8">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="master.css">
     <title>Modificar</title>
   </head>
   <body>
@@ -36,17 +37,33 @@ if(isset($_POST['id']))
          echo "<p class='alert alert-danger'>$error</p>";
        }
      ?>
+     <h1>Editar tarea</h1>
+    <form class="form" method="post">
 
-    <form class="" method="post">
       <input type="hidden" name="id" value="<?php echo ($_REQUEST['id'])?>">
+
+      <div class="form-group">
       <label>Tarea</label>
-      <input type="text" name="tarea" value="<?php echo urldecode($_REQUEST['tarea'])?>" />
+      <input class="form-control" type="text" name="tarea" value="<?php echo urldecode($_REQUEST['tarea'])?>" />
+      </div>
+
+      <div class="form-group">
       <label>Fecha vencimiento</label>
-      <input type="date" name="vencimiento" value="<?php echo ($_REQUEST['vencimiento'])?>"/>
-      <label>Finalizada</label>
+      <input class="form-control" type="date" name="vencimiento" value="<?php echo ($_REQUEST['vencimiento'])?>"/>
+      </div>
+
+      <div class="checkbox">
+      <label>
       <input type="checkbox" name="estado" value="0" />
-      <input class="" type="submit" value="Guardar" />
-      <a class="" href="index.php">Cancelar</a>
+      Finalizada
+      </label>
+      </div>
+
+      <div class="form-group">
+      <input class="btn btn-primary" type="submit" value="Guardar" />
+      <a class="btn btn-default" href="index.php">Cancelar</a>
+      </div>
+
     </form>
   </body>
 </html>
