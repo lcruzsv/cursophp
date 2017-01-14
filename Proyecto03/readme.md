@@ -2,4 +2,5 @@
 - Trabajar con funciones
 - Trabajar con archivos include
 - Reutilizar codigo
-- Urilizar parametros en URL
+- Utilizar parametros en URL
+- Generar codigo HTML
