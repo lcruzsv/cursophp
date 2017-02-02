@@ -1,0 +1,54 @@
+h2{
+
+
+
+}
+
+ 
+.logo{
+  margin: 30px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.fondo-oscuro{
+  background-color: #2E3C54;
+  color: #ccc;
+  height: 100vh;
+  border-right-style: solid;
+  border-right-width: 2px;
+
+}
+
+.fondo-oscuro h2{
+  color: #fff;
+  font-size: 1.4em;
+  margin: 10px;
+  line-height: 1.2em;
+  border-bottom: 1px dotted #8c8b8b;
+}
+
+.libro{
+  padding: 2px;
+}
+
+.fondo-oscuro .libro:hover{
+  background-color: #9fafcf;
+  color:black;
+}
+.tarea{
+  margin: 10px;
+  padding: 10px;
+  border-bottom: 1px dotted #8c8b8b;
+}
+
+.tarea:last-child{
+  border-bottom-style: none;
+}
+
+.tarea:hover{
+  background-color: #eee;
+  border-radius: 5px;
+  border-bottom-style: none;
+}
