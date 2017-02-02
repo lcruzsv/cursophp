@@ -3,21 +3,55 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 $tareas = $app['controllers_factory'];
-$tareas->get('/', function () use($app){
+
+/**
+*
+**/
+$tareas->get('/', function (Request $request) use($app){
 
   $modeloTareas = new \models\tareas($app['db']);
 
-  return $app['twig']->render('tareas/index.html.twig', array( 'tareas' => $modeloTareas->getTodos() ));
-});
+  $nombre = $request->get('nombre');
+  if ($nombre != '')
+  {
+    $datos = array(
+      'nombre' => $nombre,
+      'estado' => 'P',
+      'propietario' => '1'
+    );
+    $modeloTareas->insertar($datos);
+  }
+
+  return $app['twig']->render('tareas/index.html.twig', array( 'tareas' => $modeloTareas->getTareasPendientes() ));
+})->bind('tareas_inicio');
 
 
-$tareas->get('/nuevo', function (Request $request) use($app) {
+$tareas->get('/borrar', function (Request $request) use($app) {
 
-  $data = $request->get('nombre');
+  $id = $request->get('id');
   $modeloTareas = new \models\tareas($app['db']);
-  
-  return $data;
-});
+  $condicion = array(
+    'id' => $id
+  );
+  $modeloTareas->borrar($condicion);
+  return $app['twig']->render('tareas/index.html.twig', array( 'tareas' => $modeloTareas->getTareasPendientes() ));
+})->bind('tareas_borrar');
+
+
+$tareas->get('/completar', function (Request $request) use($app) {
+
+  $id = $request->get('id');
+  $modeloTareas = new \models\tareas($app['db']);
+  $condicion = array(
+    'id' => $id
+  );
+
+  $datos = array(
+    'estado' => 'C'
+  );
+  $modeloTareas->actualizar($datos, $condicion);
+  return $app['twig']->render('tareas/index.html.twig', array( 'tareas' => $modeloTareas->getTareasPendientes() ));
+})->bind('tareas_completar');
 
 return $tareas;
 ?>

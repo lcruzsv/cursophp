@@ -9,7 +9,7 @@ use Doctrine\DBAL\DriverManager;
 //Request::setTrustedProxies(array('127.0.0.1'));
 
 $app->get('/', function () use ($app) {
-
+/*
     $tarea = 'lll';
     $sql = "SELECT * FROM tareas ";
     $post = $app['db']->fetchAssoc($sql);
@@ -20,12 +20,12 @@ $app->get('/', function () use ($app) {
     ->from('tareas')
     ->where('id = ?')
     ->setParameter(0, 1)->execute()->fetchAll();
-
+*/
     //siledie ( print_r($t)  );
 
     #$statement = $conn->executeQuery('SELECT * FROM user WHERE username = ?', array('jwage'));
     #$user = $statement->fetch();
-    return $app['twig']->render('index.html.twig', array( 'tarea' => $t[0]['nombre'] ));
+    return $app['twig']->render('index.html.twig', array( 'tarea' => '' ));
 })
 ->bind('homepage')
 ;

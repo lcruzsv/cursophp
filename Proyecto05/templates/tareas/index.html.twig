@@ -3,8 +3,9 @@
 {% block content %}
     <h2>Aprender desarrollo web</h2>
 
-
-      <input type="text" class="form-control" placeholder="Escriba una tarea y presione la tecla Enter">
+      <form class="" method="get">
+        <input autofocus type="text" name="nombre" class="form-control" placeholder="Escriba una tarea y presione la tecla Enter">
+      </form>
      <hr>
 
     <div class="panel panel-default">
@@ -12,10 +13,10 @@
 
           {% for tarea in tareas %}
             <div class="tarea">
-                <i class="fa fa-check" aria-hidden="true"></i>
+                <a href="{{ url('tareas_completar', {'id':  tarea.id  }) }}"><i class="fa fa-check" aria-hidden="true"></i></a>
                 {{ tarea.nombre }}
                 <span class="pull-right">
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    <a href="{{ url('tareas_borrar', {'id':  tarea.id  }) }}" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                 </span>
             </div>
 

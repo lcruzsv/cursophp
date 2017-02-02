@@ -3,19 +3,36 @@ namespace models;
 
 class base {
 
-  private $db;
+  protected $db;
   protected $creado_por;
   protected $tabla;
-  protected $campos = array(    
+  protected $campos = array(
   );
   public function __construct($db)
   {
       $this->db = $db;
+      $this->crearTabla();
+
   }
 
   public function getCreadoPor()     {
       //return $this->id;
       return "Luis Cruz?";
+  }
+
+  public function getEsquema()
+  {
+
+  }
+
+  public function crearTabla()
+  {
+      $schema = $this->db->getSchemaManager();
+      if (!$schema->tablesExist($this->tabla))
+      {
+        $schema = $this->db->getSchemaManager();
+        $schema->createTable( $this->getEsquema() );
+      }
   }
 
   public function getTodos()
@@ -32,13 +49,28 @@ class base {
     return $resultado;
   }
 
-  public function insertar($valores)
+  /**
+   * Agrega un registro en la base de datos
+   * @param  [type] $datos [description]
+   * @return bool        verdadero si el registro se inserto
+   */
+  public function insertar($datos)
   {
-    $sql = "insert into ". $this->tabla ();
-    $resultado = $this->db->fetchAssoc($sql, array((int) $id));
-    return $resultado;
+    $this->db->insert($this->tabla, $datos);
+    return true;
   }
 
+  public function borrar($condiciones)
+  {
+    $this->db->delete($this->tabla, $condiciones);
+    return true;
+  }
+
+  public function actualizar($datos, $condiciones)
+  {
+    $this->db->update($this->tabla, $datos, $condiciones);
+    return true;
+  }
 }
 
  ?>

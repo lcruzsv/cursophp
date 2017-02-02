@@ -1,7 +1,7 @@
 <?php
-
 namespace models;
 
+use Doctrine\DBAL\Schema\Table;
 class tareas extends  base  {
 
     protected $id;
@@ -12,62 +12,29 @@ class tareas extends  base  {
       array('campo' => 'nombre', 'tipo'=>'string' )
     );
 
-    function 
-    $schema = $app['db']->getSchemaManager();
-    if (!$schema->tablesExist('users')) {
-        $users = new Table('users');
-        $users->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
-        $users->setPrimaryKey(array('id'));
-        $users->addColumn('username', 'string', array('length' => 32));
-        $users->addUniqueIndex(array('username'));
-        $users->addColumn('password', 'string', array('length' => 255));
-        $users->addColumn('roles', 'string', array('length' => 255));
-
-        $schema->createTable($users);
-
-        $app['db']->insert('users', array(
-          'username' => 'fabien',
-          'password' => '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a',
-          'roles' => 'ROLE_USER'
-        ));
-
-        $app['db']->insert('users', array(
-          'username' => 'admin',
-          'password' => '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a',
-          'roles' => 'ROLE_ADMIN'
-        ));
-    }
-
-
-
-    public function getId()     {
-        //return $this->id;
-        return "Si funciona?";
-    }
-
-    public function setId($id)
+/**
+ * [getEsquema description]
+ * @return [type] [description]
+ */
+    public function getEsquema()
     {
-        $this->id = $id;
+      $schema = $this->db->getSchemaManager();
+      $tabla = new Table($this->tabla);
+      $tabla->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
+      $tabla->setPrimaryKey(array('id'));
+      $tabla->addColumn('nombre', 'string', array('length' => 140));
+      $tabla->addColumn('propietario', 'integer');
+      $tabla->addColumn('estado', 'string', array('length' => 1));
+
+      return $tabla;
     }
 
-    public function getNombre()
+    public function getTareasPendientes()
     {
-        return $this->nombre;
+      return $this->db->fetchAll('SELECT * FROM tareas WHERE estado = "P"');      
     }
 
-    public function setNombre($nombre)
-    {
-        $this->nombre = $nombre;
-    }
 
-    public function getEstado()
-    {
-        return $this->estado;
-    }
 
-    public function setEstado($estado)
-    {
-        $this->estado = $estado;
-    }
   }
 ?>
