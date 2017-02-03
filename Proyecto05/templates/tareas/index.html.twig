@@ -3,7 +3,7 @@
 {% block content %}
     <h2>Aprender desarrollo web</h2>
 
-      <form class="" method="get">
+      <form class="" action = "{{ url('tareas_nuevo') }}" method="post">
         <input autofocus type="text" name="nombre" class="form-control" placeholder="Escriba una tarea y presione la tecla Enter">
       </form>
      <hr>
