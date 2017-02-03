@@ -10,6 +10,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\User;
 
+//Multiples url en firewall
+use Symfony\Component\HttpFoundation\RequestMatcher;
+
 $app = new Application();
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new AssetServiceProvider());
@@ -34,9 +37,13 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 require_once 'schema.php'; #Todo esto no me gusta
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
-        'admin' => array(
-            'pattern' => '^/admin',
-            'http' => true,
+      'publico' => array(
+          'pattern' =>  '^/usuario',          
+          ),
+
+        'privado' => array(
+            'pattern' =>  '^/',
+            'form' => array('login_path' => 'login', 'check_path' => '/admin/login_check'),
             'users' => function () use ($app) {
                   return new models\UserProvider($app['db']);
               },
@@ -46,7 +53,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 ));
 
 //Montar controles
-$app->mount('/tareas', include 'controllers/tareas.php');
+$app->mount('/', include 'controllers/tareas.php');
 $app->mount('/usuario', include 'controllers/usuarios.php');
 
 return $app;
