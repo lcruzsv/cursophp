@@ -38,8 +38,17 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
-//die( $app['security.encoder.digest']->encodePassword('password', ''));
 
+$app->register(new Silex\Provider\SwiftmailerServiceProvider());
+//  Configurar envio de correos
+$app['swiftmailer.options'] = array(
+  'host' => 'smtp.gmail.com',
+  'port' => 465,
+  'username' => 'cruz.orellana@gmail.com',
+  'password' => '594685',
+  'encryption' => 'ssl',
+  'auth_mode' => 'login'
+);
 //Habilitar sesiones de usuario
 $app
     ->register(new Silex\Provider\SessionServiceProvider())
@@ -58,7 +67,6 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
         'privado' => array(
             'pattern' =>  '^/',
             'http' => true,
-            'anonymous' => true,
             'form' => array('login_path' => '/login', 'check_path' => 'login_check'),
             'logout' => array('logout_path' => '/admin/logout', 'invalidate_session' => true),
             'users' => function () use ($app) {
@@ -70,7 +78,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 ));
 
 //Montar controles
-$app->mount('/tareas', include 'controllers/tareas.php');
+$app->mount('/', include 'controllers/tareas.php');
 #$app->mount('/usuario', include 'controllers/usuarios.php');
 
 
