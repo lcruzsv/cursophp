@@ -1,7 +1,7 @@
 {% extends "anonimo.html.twig" %}
 
 {% block content %}
-
+<form action="{{ path('login_check') }}" method="post">
  <div class="modal show" id="" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
    <div class="modal-dialog">
      <div class="modal-content">
@@ -27,5 +27,6 @@
      </div>
    </div>
  </div>
+ </form>
 
 {% endblock %}

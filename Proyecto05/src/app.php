@@ -13,6 +13,10 @@ use Symfony\Component\Security\Core\User\User;
 //Multiples url en firewall
 use Symfony\Component\HttpFoundation\RequestMatcher;
 
+//Pasar a login form
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 $app = new Application();
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new AssetServiceProvider());
@@ -34,16 +38,29 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
+//die( $app['security.encoder.digest']->encodePassword('password', ''));
+
+//Habilitar sesiones de usuario
+$app
+    ->register(new Silex\Provider\SessionServiceProvider())
+    ->register(new Silex\Provider\FormServiceProvider())
+    ->register(new Silex\Provider\ValidatorServiceProvider())
+    ;
+
+
 require_once 'schema.php'; #Todo esto no me gusta
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
-      'publico' => array(
-          'pattern' =>  '^/usuario',          
-          ),
+      'login' => array(
+             'pattern' => '^/login$',
+         ),
 
         'privado' => array(
             'pattern' =>  '^/',
-            'form' => array('login_path' => 'login', 'check_path' => '/admin/login_check'),
+            'http' => true,
+            'anonymous' => true,
+            'form' => array('login_path' => '/login', 'check_path' => 'login_check'),
+            'logout' => array('logout_path' => '/admin/logout', 'invalidate_session' => true),
             'users' => function () use ($app) {
                   return new models\UserProvider($app['db']);
               },
@@ -53,7 +70,8 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 ));
 
 //Montar controles
-$app->mount('/', include 'controllers/tareas.php');
-$app->mount('/usuario', include 'controllers/usuarios.php');
+$app->mount('/tareas', include 'controllers/tareas.php');
+#$app->mount('/usuario', include 'controllers/usuarios.php');
+
 
 return $app;

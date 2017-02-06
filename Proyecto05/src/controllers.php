@@ -8,6 +8,18 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\DBAL\DriverManager;
 //Request::setTrustedProxies(array('127.0.0.1'));
 
+
+$app->get('/login', function(Request $request) use ($app) {
+    return $app['twig']->render('login.html.twig', array(
+        'error'         => $app['security.last_error']($request),
+        'last_username' => $app['session']->get('_security.last_username'),
+    ));
+});
+
+$app->get('/admin/logout', function(Request $request) use ($app) {
+    return $app->redirect($app['url_generator']->generate('home'));
+});
+
 $app->get('/', function () use ($app) {
 /*
     $tarea = 'lll';
