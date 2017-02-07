@@ -9,7 +9,7 @@ $tareas = $app['controllers_factory'];
 **/
 $tareas->get('/', function (Request $request) use($app){
 
-
+/*
   $message = \Swift_Message::newInstance()
          ->setSubject('[YourSite] Feedback')
          ->setFrom(array('cruz.orellana@gmail.com'))
@@ -18,7 +18,7 @@ $tareas->get('/', function (Request $request) use($app){
 
      $app['mailer']->send($message);
 
-
+*/
 
   $modeloTareas = new \models\tareas($app['db']);
   return $app['twig']->render('tareas/index.html.twig', array( 'tareas' => $modeloTareas->getTareasPendientes() ));

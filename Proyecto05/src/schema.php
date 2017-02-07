@@ -10,6 +10,7 @@ if (!$schema->tablesExist('users')) {
     $users->addUniqueIndex(array('username'));
     $users->addColumn('password', 'string', array('length' => 255));
     $users->addColumn('roles', 'string', array('length' => 255));
+    $users->addColumn('reset', 'string', array('length' => 255));
 
     $schema->createTable($users);
 

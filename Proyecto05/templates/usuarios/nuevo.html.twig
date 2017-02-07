@@ -1,0 +1,33 @@
+{% extends "anonimo.html.twig" %}
+
+{% block content %}
+
+
+    <div class="center_div login">
+
+
+        <form method="post">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <img class="center-block" src="{{ asset('img/logo.png') }}" alt="">
+                </div>
+                <div class="panel-body">
+
+                  <div class="form-group">
+                    {{ form_row(form.email, {'attr': {'class': 'form-control'} }) }}
+                  </div>
+
+                  <div class="form-group">
+                    {{ form_row(form.clave) }}
+                  </div>
+
+                </div>
+                <div class="panel-footer">
+                    <button type="submit" class="btn btn-success" name="button">Crear cuenta</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock %}

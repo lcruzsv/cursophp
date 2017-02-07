@@ -13,9 +13,12 @@ use Symfony\Component\Security\Core\User\User;
 //Multiples url en firewall
 use Symfony\Component\HttpFoundation\RequestMatcher;
 
-//Pasar a login form
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+//Pasar a login
+#use Symfony\Component\HttpFoundation\Request;
+#use Symfony\Component\HttpFoundation\Response;
+
+//Usar Formularios
+use Silex\Provider\FormServiceProvider;
 
 $app = new Application();
 $app->register(new ServiceControllerServiceProvider());
@@ -27,6 +30,15 @@ $app['twig'] = $app->extend('twig', function ($twig, $app) {
     // add custom globals, filters, tags, ...
     return $twig;
 });
+
+//Registrar Formularios
+$app->register(new FormServiceProvider());
+$app->register(new Silex\Provider\ValidatorServiceProvider());
+$app->register(new Silex\Provider\TranslationServiceProvider(), array(
+    'translator.domains' => array(),
+    'locale'            => 'es',
+    'locale_fallbacks'  => array('es')
+));
 
 // Registrar acceso a base de datos
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
@@ -58,16 +70,21 @@ $app
 
 
 require_once 'schema.php'; #Todo esto no me gusta
+
+//Montar controles
+$app->mount('/', include 'controllers/tareas.php');
+$app->mount('/usuario', include 'controllers/usuarios.php');
+
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
       'login' => array(
-             'pattern' => '^/login$',
+             'pattern' => '^/usuario',
          ),
 
         'privado' => array(
-            'pattern' =>  '^/asa',
+            'pattern' =>  '^/',
             'http' => true,
-            'form' => array('login_path' => '/login', 'check_path' => 'login_check'),
+            'form' => array('login_path' => '/usuario/login', 'check_path' => 'login_check'),
             'logout' => array('logout_path' => '/admin/logout', 'invalidate_session' => true),
             'users' => function () use ($app) {
                   return new models\UserProvider($app['db']);
@@ -77,9 +94,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 
 ));
 
-//Montar controles
-$app->mount('/', include 'controllers/tareas.php');
-#$app->mount('/usuario', include 'controllers/usuarios.php');
+
 
 
 return $app;
