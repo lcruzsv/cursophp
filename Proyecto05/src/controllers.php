@@ -9,15 +9,13 @@ use Doctrine\DBAL\DriverManager;
 //Request::setTrustedProxies(array('127.0.0.1'));
 
 
-$app->get('/login', function(Request $request) use ($app) {
+$app->post('/login', function(Request $request) use ($app) {
 
-  return $app['twig']->render('usuarios/login.html.twig');
-  /*
     return $app['twig']->render('usuarios/login.html.twig', array(
         'error'         => $app['security.last_error']($request),
         'last_username' => $app['session']->get('_security.last_username'),
     ));
-    */
+
 });
 
 $app->get('/admin/logout', function(Request $request) use ($app) {

@@ -65,7 +65,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
          ),
 
         'privado' => array(
-            'pattern' =>  '^/',
+            'pattern' =>  '^/asa',
             'http' => true,
             'form' => array('login_path' => '/login', 'check_path' => 'login_check'),
             'logout' => array('logout_path' => '/admin/logout', 'invalidate_session' => true),

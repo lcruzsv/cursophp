@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>
-            {% block title '' %}
+            {% block title %}
                 - ToDo</title>
             {% endblock %}
             <link href="https://fonts.googleapis.com/css?family=Open+Sans|Oswald" rel="stylesheet">
@@ -51,7 +51,7 @@
 
                             <li role="presentation" class="dropdown pull-right">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    {{ app.user.username }}
+                                    {# app.user.username #}
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">

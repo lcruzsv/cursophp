@@ -1,7 +1,35 @@
 {% extends "anonimo.html.twig" %}
 
 {% block content %}
-login
+
+ <div class="center_div login">
+   {{ error }}
+   <form class=""  method="post">
+     <div class="panel panel-default">
+       <div class="panel-heading">
+         <img class="center-block" src="{{ asset('img/logo.png') }}" alt="">
+       </div>
+       <div class="panel-body">
+
+          <div class="form-group">
+            <label for=""></label>
+            <input type="text" name="_username" value="{{ last_username }}" class="form-control" id="" placeholder="Email">
+          </div>
+
+          <div class="form-group">
+            <label for=""></label>
+            <input type="password"  name="_password" value="" class="form-control" id="" placeholder="Clave">
+          </div>
+
+       </div>
+       <div class="panel-footer">
+          <button type="submit" class="btn btn-success" name="button">Ingresar</button>
+          <a href="#" class="pull-right">¿Olvidaste tu clave?</a>
+       </div>
+     </div>
+     <a href="#" class="btn btn-default" style="width:275px;">Crea una cuenta (es gratis)</a>
+   </form>
+ </div>
 
 
 {% endblock %}
