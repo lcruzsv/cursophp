@@ -10,12 +10,13 @@ use Symfony\Component\Validator\ExecutionContext;
 
 //Codificar password
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 $usuarios = $app['controllers_factory'];
 
 $usuarios->get('/login', function(Request $request) use ($app) {
 
- 
+
 
 
 
@@ -60,7 +61,6 @@ $usuarios->match('/nuevo',  function (Request $request) use ($app) {
      if ($form->isSubmitted())
      {
        $data = $form->getData();
-       #$form->get('email')->removeErrors();
 
        //El correo no debe de existir
        $existe = $app['db']->fetchColumn('SELECT username FROM users WHERE username = ?', array($data['email']));
@@ -85,8 +85,21 @@ $usuarios->match('/nuevo',  function (Request $request) use ($app) {
            'roles' => 'ROLE_USER'
          ));
 
+         $user = new \Symfony\Component\Security\Core\User\User($data['email'], $data['clave'], array('ROLE_USER'));
+         $token = new UsernamePasswordToken(
+             $user,
+             $user->getPassword(),
+             'privado',                 //Llave del firewall
+             $user->getRoles()
+         );
 
 
+         // _security_privado depende del nombre del firewall
+         $app['session']->set('_security_privado', serialize($token));
+         $app['session']->save();
+         $app['security.token_storage']->setToken($token);
+
+         //Logeamos al usuario y lo enviamos a la pagina principal
          return $app->redirect($app["url_generator"]->generate("tareas_inicio"));
 
      }
