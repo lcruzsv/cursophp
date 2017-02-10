@@ -40,6 +40,10 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
     'locale_fallbacks'  => array('es')
 ));
 
+//Redireccionar a rutas
+#$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+
 // Registrar acceso a base de datos
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(

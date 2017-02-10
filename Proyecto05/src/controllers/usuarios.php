@@ -6,12 +6,18 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Validator\Constraints as Assert; //Validaciones
 
+use Symfony\Component\Validator\ExecutionContext;
+
 //Codificar password
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 
 $usuarios = $app['controllers_factory'];
 
 $usuarios->get('/login', function(Request $request) use ($app) {
+
+ 
+
+
 
     return $app['twig']->render('usuarios/login.html.twig', array(
         'error'         => $app['security.last_error']($request),
@@ -33,7 +39,10 @@ $usuarios->match('/nuevo',  function (Request $request) use ($app) {
 
   $form = $app['form.factory']->createBuilder(FormType::class, $data)
          ->add('email', null, array(
-                'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 5)))
+                   "constraints"   =>  array(
+                   new Assert\NotBlank(),
+                   new Assert\Email(),
+               ), //Constraints
               ))
          ->add('clave', RepeatedType::class, array(
                 'invalid_message' => 'Las claves deben ser identicas',
@@ -44,12 +53,27 @@ $usuarios->match('/nuevo',  function (Request $request) use ($app) {
 
          ->getForm();
 
-   $form->handleRequest($request);
+     $form->handleRequest($request);
+
+
+     //Validaciones adicionales
+     if ($form->isSubmitted())
+     {
+       $data = $form->getData();
+       #$form->get('email')->removeErrors();
+
+       //El correo no debe de existir
+       $existe = $app['db']->fetchColumn('SELECT username FROM users WHERE username = ?', array($data['email']));
+       if($existe)
+       {
+          $form->get('email')->addError(new \Symfony\Component\Form\FormError("Ya hay un usuario con este Email"));
+       }
+     }
 
      if ($form->isValid()) {
          $data = $form->getData();
 
-         var_dump($data);
+
          $encoder = new BCryptPasswordEncoder(10);
          $pwd = $data['clave'];
          $clave = $encoder->encodePassword($pwd, '');
@@ -61,8 +85,10 @@ $usuarios->match('/nuevo',  function (Request $request) use ($app) {
            'roles' => 'ROLE_USER'
          ));
 
-         //return $app->redirect('...');
-         return "nuevo";
+
+
+         return $app->redirect($app["url_generator"]->generate("tareas_inicio"));
+
      }
 
 
