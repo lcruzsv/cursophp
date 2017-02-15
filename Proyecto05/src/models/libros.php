@@ -2,15 +2,11 @@
 namespace models;
 
 use Doctrine\DBAL\Schema\Table;
-class tareas extends  base  {
+class libros extends  base  {
 
     protected $id;
     protected $nombre;
-    protected $estado;
-    protected $tabla = 'tareas';
-    protected $campos = array(
-      array('campo' => 'nombre', 'tipo'=>'string' )
-    );
+    protected $tabla = 'libros';
 
 /**
  * [getEsquema description]
@@ -24,15 +20,17 @@ class tareas extends  base  {
       $tabla->setPrimaryKey(array('id'));
       $tabla->addColumn('nombre', 'string', array('length' => 140));
       $tabla->addColumn('propietario', 'integer');
-      $tabla->addColumn('estado', 'string', array('length' => 1));
-      $tabla->addColumn('libro', 'integer');
-
       return $tabla;
     }
 
-    public function getTareasPendientes($userId, $libro)
+    public function getLibros($userId)
     {
-      return $this->db->fetchAll('SELECT * FROM tareas WHERE estado = ? and propietario = ? and libro = ?', array('P', $userId, $libro ));
+      return $this->db->fetchAll('SELECT * FROM libros WHERE propietario = ? ', array( $userId ));
+    }
+
+    public function getTareasPorLibro($userId)
+    {
+      return $this->db->fetchAll('SELECT * FROM tareas WHERE estado = ? and propietario = ? ', array('P', $userId ));
     }
 
 

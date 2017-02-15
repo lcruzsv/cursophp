@@ -1,0 +1,26 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+   <form class="" action="{{ url('libros_nuevo') }}" method="post">
+     <input autofocus type="text" name="nombre" class="form-control" value="" placeholder="Ingrese el nombre de su libro y presione la tecla Enter">
+   </form>
+   {% if libros %}
+     {% for libro in libros %}
+
+       <div class="tarea">
+
+           {{ libro.nombre }}
+           <span class="pull-right">
+               <a href="{{ url('libros_borrar', {'id':  libro.id  }) }}" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+           </span>
+       </div>
+
+
+     {% endfor %}
+   {% else %}
+     Aun no ha creado su primer libro
+   {% endif %}
+
+
+
+{% endblock %}

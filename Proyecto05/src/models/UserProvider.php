@@ -41,5 +41,6 @@ class UserProvider implements UserProviderInterface
     {
         return $class === 'Symfony\Component\Security\Core\User\User';
     }
+
 }
 ?>

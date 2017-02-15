@@ -26,9 +26,11 @@
                         <img class="logo" src="{{ asset('img/logo.png') }}" alt="">
                         <h2 class="">Libros</h2>
 
-                        <div class="libro">Aprender desarrollo web</div>
-                        <div class="libro">Lista de compras</div>
-                        <div class="libro">Vacaciones</div>
+                        {% for libro in libros %}
+                          <div class="libro"><a href="{{url('libros_seleccionar', {'id':  libro.id  })}}">{{libro.nombre}}</a></div>
+                        {% endfor %}
+
+
 
                         {% block libros %}{% endblock %}
                     </div>
@@ -40,11 +42,11 @@
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                  <li><a href="#">Administrar libros</a></li>
+                                  <li><a href="{{ url('libros_inicio') }}">Administrar libros</a></li>
                                   <li role="separator" class="divider"></li>
-                                  <li><a href="#">Aprender desarrollo web</a></li>
-                                  <li><a href="#">Lista de compras</a></li>
-                                  <li><a href="#">Vacaciones</a></li>
+                                  {% for libro in libros %}
+                                    <li><a href="{{url('libros_seleccionar', {'id':  libro.id  })}}">{{libro.nombre}}</a></li>
+                                  {% endfor %}
                                 </ul>
                             </li>
 

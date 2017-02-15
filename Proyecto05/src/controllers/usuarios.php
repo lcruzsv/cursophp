@@ -16,10 +16,6 @@ $usuarios = $app['controllers_factory'];
 
 $usuarios->get('/login', function(Request $request) use ($app) {
 
-
-
-
-
     return $app['twig']->render('usuarios/login.html.twig', array(
         'error'         => $app['security.last_error']($request),
         'last_username' => $app['session']->get('_security.last_username'),
@@ -46,6 +42,7 @@ $usuarios->match('/nuevo',  function (Request $request) use ($app) {
                ), //Constraints
               ))
          ->add('clave', RepeatedType::class, array(
+                'type' => PasswordType::class,
                 'invalid_message' => 'Las claves deben ser identicas',
                 'first_options'  => array('label' => 'Clave', 'attr'=> array('class'=>'form-control')),
                 'second_options' => array('label' => 'Confirmar clave', 'attr'=> array('class'=>'form-control')),
@@ -112,9 +109,6 @@ $usuarios->match('/nuevo',  function (Request $request) use ($app) {
 $usuarios->get('/', function () { return 'Blog home page'; });
 $usuarios->get('/resetear', function () { return 'Ingresa tu correo'; });
 
-$usuarios->get('/nuevo', function () use($app){
-  return $app['twig']->render('usuarios/nuevo.html.twig');
-})->bind('usuario_nuevo');
 */
 
 return $usuarios;

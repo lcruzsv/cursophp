@@ -72,12 +72,17 @@ $app
     ->register(new Silex\Provider\ValidatorServiceProvider())
     ;
 
-
 require_once 'schema.php'; #Todo esto no me gusta
 
 //Montar controles
 $app->mount('/', include 'controllers/tareas.php');
+$app->mount('/libros', include 'controllers/libros.php');
 $app->mount('/usuario', include 'controllers/usuarios.php');
+
+
+//Crear tablas, si no existen
+$tmp = new \models\tareas($app['db']);
+$tmp = new \models\libros($app['db']);
 
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
@@ -98,7 +103,24 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 
 ));
 
+/*
+*  Regresa el id de usuario.
+ */
+$app['userId'] = function ($app) {
+  $token = $app['security.token_storage']->getToken();
+  if (null !== $token)
+  {
+      $user = $token->getUser();
+      $userId = $app['db']->fetchColumn('SELECT id FROM users WHERE username = ?', array($user), 0);
+      return $userId;
+  }
+  return false;
+};
 
-
+$app['libros'] = function ($app) {
+  $user = $app['userId'];
+  return( $app['db']->fetchAll('SELECT id, nombre FROM libros WHERE propietario = ?', array($user)));
+  //return 1;
+};
 
 return $app;
