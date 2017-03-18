@@ -75,9 +75,10 @@ $app
 require_once 'schema.php'; #Todo esto no me gusta
 
 //Montar controles
-$app->mount('/', include 'controllers/tareas.php');
-$app->mount('/libros', include 'controllers/libros.php');
+$app->mount('/',        include 'controllers/tareas.php');
+$app->mount('/libros',  include 'controllers/libros.php');
 $app->mount('/usuario', include 'controllers/usuarios.php');
+$app->mount('/api',     include 'controllers/api.php');
 
 
 //Crear tablas, si no existen
@@ -89,6 +90,9 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
       'login' => array(
              'pattern' => '^/usuario',
          ),
+         'api' => array(
+                'pattern' => '^/api',
+            ),
 
         'privado' => array(
             'pattern' =>  '^/',
@@ -108,12 +112,23 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
  */
 $app['userId'] = function ($app) {
   $token = $app['security.token_storage']->getToken();
+
+  $userId  = $app['session']->get('userid');
+  if($userId)
+  {
+    return $userId;
+  }
+
   if (null !== $token)
   {
       $user = $token->getUser();
       $userId = $app['db']->fetchColumn('SELECT id FROM users WHERE username = ?', array($user), 0);
+
+      $app['session']->set('userid', $userId);
+      $app['session']->save();
       return $userId;
   }
+
   return false;
 };
 

@@ -5,15 +5,13 @@ use Symfony\Component\HttpFoundation\Response;
 $libros = $app['controllers_factory'];
 
 /**
-*
+*  Lista de tareas
 **/
 $libros->get('/', function (Request $request) use($app){
 
   $modeloLibros = new \models\libros($app['db']);
-  return $app['twig']->render('libros/index.html.twig', array( 'libros' => $modeloLibros->getLibros($app['userId']) ));
+  return $app['twig']->render('libros/index.html.twig', array( 'libros' => $modeloLibros->getLibros($app['userId'])));
 })->bind('libros_inicio');
-
-
 
 
 $libros->post('/nuevo', function (Request $request) use($app) {

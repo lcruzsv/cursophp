@@ -1,11 +1,19 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-    <h2>Aprender desarrollo web</h2>
+    <h2>{{nombre_libro}}</h2>
 
-      <form class="" action = "{{ url('tareas_nuevo') }}" method="post">
-        <input autofocus type="text" name="nombre" class="form-control" placeholder="Escriba una tarea y presione la tecla Enter">
-      </form>
+      {% if nombre_libro %}
+          <form class="" action = "{{ url('tareas_nuevo') }}" method="post">
+            <input autofocus type="text" name="nombre" class="form-control" placeholder="Escriba una tarea y presione la tecla Enter">
+          </form>
+
+      {% else %}
+          <p>Para comenzar a trabajar debe seleccionar un libro de la lista "Libros" arriba de este texto.
+            Si aun no ha creado algun libro, puede hacer click <a href="{{ url('libros_inicio') }}">aquí</a> para crearlo</p>
+      {% endif %}
+
+
      <hr>
 
     <div class="panel panel-default">

@@ -27,6 +27,9 @@ $usuarios->get('/admin/logout', function(Request $request) use ($app) {
     return $app->redirect($app['url_generator']->generate('home'));
 });
 
+/*
+* Crear usuario
+ */
 $usuarios->match('/nuevo',  function (Request $request) use ($app) {
 
   $data = array(
@@ -67,7 +70,7 @@ $usuarios->match('/nuevo',  function (Request $request) use ($app) {
        }
      }
 
-     if ($form->isValid()) {
+     if ($form->isValid() ) {
          $data = $form->getData();
 
 
@@ -90,7 +93,6 @@ $usuarios->match('/nuevo',  function (Request $request) use ($app) {
              $user->getRoles()
          );
 
-
          // _security_privado depende del nombre del firewall
          $app['session']->set('_security_privado', serialize($token));
          $app['session']->save();
@@ -106,10 +108,50 @@ $usuarios->match('/nuevo',  function (Request $request) use ($app) {
 })->bind('usuario_nuevo');
 
 /*
-$usuarios->get('/', function () { return 'Blog home page'; });
-$usuarios->get('/resetear', function () { return 'Ingresa tu correo'; });
-
+* Cambiar clave de usuario actual
 */
+$usuarios->match('/clave', function(Request $request) use ($app) {
+
+  $form = $app['form.factory']->createBuilder(FormType::class)
+         ->add('clave_actual', PasswordType::class, array(
+                   "constraints"   =>  array(
+                   new Assert\NotBlank()
+               ), //Constraints
+              ))
+         ->add('clave', RepeatedType::class, array(
+                'type' => PasswordType::class,
+                'invalid_message' => 'Las claves deben ser identicas',
+                'first_options'  => array('label' => 'Clave', 'attr'=> array('class'=>'form-control')),
+                'second_options' => array('label' => 'Confirmar clave', 'attr'=> array('class'=>'form-control')),
+                'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 3)))
+              ))
+
+         ->getForm();
+
+     $form->handleRequest($request);
+     if ($form->isSubmitted() && $form->isValid())
+     {
+       $data = $form->getData();
+
+       //Validar de la contraseña actual es correcta
+       $claveDB = $app['db']->fetchColumn('SELECT password FROM users WHERE id = ?', array($app['userId']), 0);
+       $encoder = new BCryptPasswordEncoder(10);
+
+       if(!$encoder->isPasswordValid($claveDB, $data['clave_actual'], '' )){
+          $form->get('clave_actual')->addError(new \Symfony\Component\Form\FormError("La clave ingresa no corresponde a la actual"));
+       }
+       else {
+
+         $clave = $encoder->encodePassword($data['clave'], '10');
+
+         $app['db']->update('users', array('password'=>$clave), array('id'=>$app['userId']));
+         $app['session']->getFlashBag()->add('msg-s','La clave ha sido cambiada');
+         return $app->redirect($app["url_generator"]->generate("tareas_inicio"));
+       }
+     }
+   return $app['twig']->render('usuarios/clave.html.twig',array('form' => $form->createView()));
+
+})->bind('cambia_clave');
 
 return $usuarios;
 ?>

@@ -55,7 +55,7 @@
   }
 
   /*
-    Crea un enlace para mostrar un mes adelante
+    Crea un enlace para mostrar un mes adelante	
   */
   function crearLinkAdelante($mes, $anio)
   {

@@ -62,9 +62,19 @@ class base {
 
   public function borrar($condiciones)
   {
-    $this->db->delete($this->tabla, $condiciones);
+    $ids = $this->db->fetchAll('SELECT id FROM '.$this->tabla .' where id in (?)', $condiciones);
+
+    $this->db->executeQuery('DELETE FROM '.$this->tabla .' WHERE id IN (?)', $condiciones);
+    $this->postBorrar($ids);
     return true;
   }
+
+  public function postBorrar($ids)
+  {
+    return true;
+  }
+
+
 
   public function actualizar($datos, $condiciones)
   {
