@@ -34,7 +34,7 @@ $libros->get('/borrar', function (Request $request) use($app) {
   $id = $request->get('id');
   $modeloLibros = new \models\libros($app['db']);
   $condicion = array(
-    'id' => $id
+    $id
   );
   $modeloLibros->borrar($condicion);
   return $app->redirect($app["url_generator"]->generate("libros_inicio"));

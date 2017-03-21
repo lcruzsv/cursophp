@@ -63,9 +63,15 @@ class base {
   public function borrar($condiciones)
   {
     $ids = $this->db->fetchAll('SELECT id FROM '.$this->tabla .' where id in (?)', $condiciones);
-
     $this->db->executeQuery('DELETE FROM '.$this->tabla .' WHERE id IN (?)', $condiciones);
-    $this->postBorrar($ids);
+    if ($ids)
+    {
+      //Convierte un array de asociativo a solo valores
+      foreach ($ids as $value) {
+        $delIds[] = $value['id'];
+      }
+      $this->postBorrar($delIds);
+    }
     return true;
   }
 

@@ -33,7 +33,11 @@ class libros extends  base  {
       return $this->db->fetchAll('SELECT * FROM tareas WHERE estado = ? and propietario = ? ', array('P', $userId ));
     }
 
-
+    public function postBorrar($ids)
+    {
+      $this->db->executeQuery('DELETE FROM tareas WHERE libro IN (?)', $ids);
+      return true;
+    }
 
   }
 ?>

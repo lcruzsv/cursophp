@@ -13,9 +13,6 @@ use Symfony\Component\Security\Core\User\User;
 //Multiples url en firewall
 use Symfony\Component\HttpFoundation\RequestMatcher;
 
-//Pasar a login
-#use Symfony\Component\HttpFoundation\Request;
-#use Symfony\Component\HttpFoundation\Response;
 
 //Usar Formularios
 use Silex\Provider\FormServiceProvider;
@@ -78,8 +75,6 @@ require_once 'schema.php'; #Todo esto no me gusta
 $app->mount('/',        include 'controllers/tareas.php');
 $app->mount('/libros',  include 'controllers/libros.php');
 $app->mount('/usuario', include 'controllers/usuarios.php');
-$app->mount('/api',     include 'controllers/api.php');
-
 
 //Crear tablas, si no existen
 $tmp = new \models\tareas($app['db']);
@@ -93,7 +88,6 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
          'api' => array(
                 'pattern' => '^/api',
             ),
-
         'privado' => array(
             'pattern' =>  '^/',
             'http' => true,
@@ -104,7 +98,6 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
               },
             ),
         ),
-
 ));
 
 /*
